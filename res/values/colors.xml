@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="title">#FFFFFFFF</color>
+    <color name="reciveBack">#00B6D3</color>
+    <color name="sendBack">#4BF864</color>
+</resources>
