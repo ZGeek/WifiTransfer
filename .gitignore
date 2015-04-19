@@ -1,4 +1,5 @@
 .idea/
 gen/
 out/
-WifiSend,iml
+.gitignore
+WifiSend.iml

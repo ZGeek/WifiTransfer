@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingLeft="10dp"
+              android:paddingRight="5dp"
+              android:paddingTop="2dp"
+              android:paddingBottom="2dp">
+
+    <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iv_sendImg"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"/>
+
+    <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:id="@+id/tv_cancel"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_toEndOf="@id/iv_sendImg"
+            android:layout_toStartOf="@id/tv_cancel"
+            android:layout_centerVertical="true"
+            >
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+               >
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23M"
+                    android:id="@+id/tv_sendSize"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="11%"
+                    android:id="@+id/tv_sendPercent"
+                    android:layout_weight="1"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信"
+                    android:id="@+id/tv_sendFileName"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+
+        <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pb_sendProcess"
+                android:layout_weight="1"
+                />
+
+    </LinearLayout>
+
+</RelativeLayout>

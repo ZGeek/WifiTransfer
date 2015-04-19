@@ -4,4 +4,5 @@
     <string name="my_send">我要发文件</string>
     <string name="my_receive">我要收文件</string>
     <string name="inviteFriends">＋邀请好友安装</string>
+    <string name="choseRevicer">等待接收</string>
 </resources>

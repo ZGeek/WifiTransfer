@@ -2,5 +2,8 @@
 <resources>
     <color name="title">#FFFFFFFF</color>
     <color name="reciveBack">#00B6D3</color>
+    <color name="reciveBack_press">#ff0088a2</color>
     <color name="sendBack">#4BF864</color>
+    <color name="sendBack_press">#ff3cc954</color>
+    <color name="titleBarBack">#00B6D3</color>
 </resources>

@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-	<solid android:color="@color/sendBack"/>
-	<corners
-			android:radius="200dp">
-		<padding
-				android:left="5dp"
-				android:top="5dp"
-				android:right="5dp"
-				android:bottom="5dp" />
-	</corners><!-- 设置圆角半径 -->
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item android:state_pressed="true">
+		<shape xmlns:android="http://schemas.android.com/apk/res/android">
+			<solid android:color="@color/sendBack_press"/>
+			<corners
+					android:radius="200dp">
+				<padding
+						android:left="5dp"
+						android:top="5dp"
+						android:right="5dp"
+						android:bottom="5dp" />
+			</corners><!-- 设置圆角半径 -->
+		</shape>
+	</item>
+	<item >
+		<shape xmlns:android="http://schemas.android.com/apk/res/android">
+			<solid android:color="@color/sendBack"/>
+			<corners
+					android:radius="200dp">
+				<padding
+						android:left="5dp"
+						android:top="5dp"
+						android:right="5dp"
+						android:bottom="5dp" />
+			</corners><!-- 设置圆角半径 -->
+		</shape>
+	</item>
+</selector>
