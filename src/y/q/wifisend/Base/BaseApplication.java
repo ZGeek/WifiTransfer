@@ -6,7 +6,7 @@ import android.app.Application;
  * Created by CFun on 2015/4/11.
  */
 public class BaseApplication extends Application {
-    Application instance;
+    static Application instance;
 
     @Override
     public void onCreate() {
@@ -14,7 +14,7 @@ public class BaseApplication extends Application {
         instance = this;
     }
 
-    public Application getInstance() {
+    public static Application getInstance() {
         return instance;
     }
 }
