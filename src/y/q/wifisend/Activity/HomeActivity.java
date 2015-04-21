@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import y.q.wifisend.Base.BaseActivity;
+import y.q.wifisend.Fragment.FileChoseFragments.FileChose;
 import y.q.wifisend.R;
 
 /**
@@ -41,7 +42,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_recive:
                 break;
             case R.id.tv_send:
-                Intent intent = new Intent(this, FoundReciverAcivity.class);
+                Intent intent = new Intent(this, FileChoseActivity.class);
                 startActivity(intent);
                 break;
         }

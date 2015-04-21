@@ -1,7 +1,6 @@
 package y.q.PageIndicator;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import y.q.wifisend.R;
@@ -16,16 +15,7 @@ public class TabView extends FrameLayout {
     public TabView(Context context, int mIndex) {
         super(context, null, R.attr.vpiTabPageIndicatorStyle);
 //        this.mMaxTabWidth = mMaxTabWidth;
-        this.mIndex = mIndex;
-    }
-
-    public TabView(Context context, AttributeSet attrs, int mIndex) {
-        super(context, attrs);
-        this.mIndex = mIndex;
-    }
-
-    public TabView(Context context, AttributeSet attrs, int defStyleAttr, int mIndex) {
-        super(context, attrs, defStyleAttr);
+        setBackgroundResource(R.drawable.vpi__tab_indicator);
         this.mIndex = mIndex;
     }
         @Override

@@ -9,17 +9,20 @@ import y.q.wifisend.R;
 /**
  * Created by CFun on 2015/4/19.
  */
-public class FoundReciverAcivity extends BaseActivity{
+
+/***
+ * 扫描接收者的Activity
+ */
+public class SacnReciverAcivity extends BaseActivity{
 
 
-    private ImageView animView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chose_reciver);
-        animView = (ImageView)findViewById(R.id.iv_anim);
-        ((AnimationDrawable)animView.getDrawable()).start();
+//        animView = (ImageView)findViewById(R.id.iv_anim);
+//        ((AnimationDrawable)animView.getDrawable()).start();
     }
 }

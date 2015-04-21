@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import y.q.wifisend.R;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -64,10 +63,10 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         }
     };
 
-    private final IcsLinearLayout mTabLayout;
+    private final LinearLayout mTabLayout;
 
     private ViewPager mViewPager;
-    private OnPageChangeListener mListener;
+    private ViewPager.OnPageChangeListener mListener;
 
     private TabTitleAdapter tabTitleAdapter;
 
@@ -84,7 +83,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         super(context, attrs);
         setHorizontalScrollBarEnabled(false);
 
-        mTabLayout = new IcsLinearLayout(context, R.attr.vpiTabPageIndicatorStyle);
+        mTabLayout = new LinearLayout(context);
         addView(mTabLayout, new ViewGroup.LayoutParams(WRAP_CONTENT, MATCH_PARENT));
     }
 
@@ -156,7 +155,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
     }
 
     private void addTab(int index) {
-        TabView tabView = tabTitleAdapter.getTabViewByID(index);
+        TabView tabView = tabTitleAdapter.getTabView(index);
 //        if(tabView.getWidth() > mMaxTabWidth)
 //            tabView.setLayoutParams(new LinearLayout.LayoutParams(mMaxTabWidth, tabView.getHeight())); //限制最宽
         tabView.setFocusable(true);

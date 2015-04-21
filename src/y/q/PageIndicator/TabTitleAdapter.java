@@ -8,7 +8,7 @@ public interface TabTitleAdapter {
     /**
      * Get icon representing the page at {@code index} in the adapter.
      */
-    TabView getTabViewByID(int index);
+    TabView getTabView(int index);
 
     // From PagerAdapter
     int getCount();

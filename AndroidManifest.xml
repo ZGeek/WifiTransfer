@@ -2,9 +2,11 @@
           package="y.q.wifisend">
 
     <uses-sdk android:minSdkVersion="13"/>
-    <application android:allowBackup="true"
-                 android:label="@string/app_name"
-                 android:icon="@mipmap/ic_launcher"
+    <application
+            android:allowBackup="true"
+            android:name=".Base.BaseApplication"
+            android:label="@string/app_name"
+            android:icon="@mipmap/ic_launcher"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
         <activity android:name=".Activity.HomeActivity">
@@ -12,8 +14,9 @@
                 <action android:name="android.intent.action.MAIN"></action>
                 <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
-          </activity>
-        <activity android:name=".Activity.FoundReciverAcivity"/>
+        </activity>
+        <activity android:name=".Activity.SacnReciverAcivity"/>
+        <activity android:name=".Activity.FileChoseActivity"/>
     </application>
 
 </manifest>

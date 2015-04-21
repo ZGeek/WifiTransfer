@@ -15,11 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
-
+        <y.q.wifisend.widget.CircleWaveView
                 android:id="@+id/iv_anim"
-                android:scaleType="center"
-                android:src="@drawable/found_anim"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
