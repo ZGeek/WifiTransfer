@@ -37,12 +37,15 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View v)
     {
+        Intent intent;
         switch (v.getId())
         {
             case R.id.tv_recive:
+                intent = new Intent(this, ScanReciverActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tv_send:
-                Intent intent = new Intent(this, FileChoseActivity.class);
+                intent = new Intent(this, FileChoseActivity.class);
                 startActivity(intent);
                 break;
         }

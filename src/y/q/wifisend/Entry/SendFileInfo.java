@@ -7,16 +7,16 @@ import android.net.Uri;
  */
 public class SendFileInfo
 {
-    Uri file;
+    String file;
     float sendPercent;
     int sendStatu = SendStatus.WAITTING;
     FileType fileType = FileType.Other;
 
-    public Uri getFile() {
+    public String getFile() {
         return file;
     }
 
-    public void setFile(Uri file) {
+    public void setFile(String file) {
         this.file = file;
     }
 
