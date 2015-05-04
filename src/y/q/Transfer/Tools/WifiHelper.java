@@ -3,12 +3,13 @@ package y.q.Transfer.Tools;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 import y.q.Transfer.Tools.admin.WifiApAdmin;
-import y.q.wifisend.Base.BaseActivity;
 import y.q.wifisend.Base.BaseApplication;
+import y.q.wifisend.Utils.LogUtil;
 
 import java.util.List;
 
@@ -31,7 +32,14 @@ public class WifiHelper
 	public WifiHelper()
 	{
 		wifiManager = (WifiManager) BaseApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
+
 	}
+
+//	public boolean disableCurrent()
+//	{
+//		LogUtil.i(this, "disableCurrent");
+//		return wifiManager.disconnect();
+//	}
 
 	/**
 	 * 设置WIFI的状态，WIFI状态被设置后不等待直接返回
@@ -40,6 +48,7 @@ public class WifiHelper
 	 */
 	public void setWifiEnabled(boolean statu)
 	{
+		LogUtil.i(this, "setWifiEnabled " + statu);
 		if (wifiManager.isWifiEnabled() != statu)
 			wifiManager.setWifiEnabled(statu);
 	}
@@ -48,29 +57,41 @@ public class WifiHelper
 	 * 设置WIFI的状态，但等待WIFI状态的真正改变后才返回
 	 *
 	 * @param statu 要设置的wifi的状态
-	 * @param  sync 是否同步执行
+	 * @param sync  是否同步执行
 	 */
 	public void setAndWaitWifiEnabled(boolean statu, boolean sync)
 	{
 		setWifiEnabled(statu);
-		if(sync)
-		while (true)
-		{
-			if (wifiManager.isWifiEnabled() == statu)
-				break;
-			else
-				try
-				{
-					Thread.sleep(500);
-				} catch (InterruptedException e)
-				{
-				}
-		}
+		if (sync)
+			while (true)
+			{
+				if (wifiManager.isWifiEnabled() == statu)
+					break;
+				else
+					try
+					{
+						Thread.sleep(500);
+					} catch (InterruptedException e)
+					{
+					}
+			}
 	}
+
+	public String getCurrentConnectedSSID()
+	{
+		LogUtil.i(this, "getCurrentConnectedSSID");
+		WifiInfo info = wifiManager.getConnectionInfo();
+		if (info != null)
+			return  info.getSSID();
+		return null;
+	}
+
 	public boolean scanApList()
 	{
+		LogUtil.i(this, "scanApList");
 		return wifiManager.startScan();
 	}
+
 	public void addNetwork(String ssid, String passwd, int type)
 	{
 		if (ssid == null || passwd == null || ssid.equals(""))
@@ -84,11 +105,19 @@ public class WifiHelper
 	// 添加一个网络并连接
 	public void addNetwork(WifiConfiguration wcg)
 	{
-		WifiApAdmin.closeWifiAp(BaseApplication.getInstance());
-
+		LogUtil.i(this, "addNetwork");
 		int wcgID = wifiManager.addNetwork(wcg);
-		boolean b = wifiManager.enableNetwork(wcgID, true);
+		if (wcgID != -1)
+		{
+			boolean b = wifiManager.enableNetwork(wcgID, true);
+		}
+		else
+		{
+			LogUtil.e(this, "addNetwork Fail");
+		}
+
 	}
+
 	public WifiConfiguration createWifiInfo(String SSID, String password, int type)
 	{
 		WifiConfiguration config = new WifiConfiguration();
@@ -108,9 +137,9 @@ public class WifiHelper
 		// 分为三种情况：1没有密码2用wep加密3用wpa加密
 		if (type == TYPE_NO_PASSWD)
 		{// WIFICIPHER_NOPASS
-			config.wepKeys[0] = "";
+//			config.wepKeys[0] = "";
 			config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-			config.wepTxKeyIndex = 0;
+//			config.wepTxKeyIndex = 0;
 
 		} else if (type == TYPE_WEP)
 		{  //  WIFICIPHER_WEP
@@ -144,6 +173,7 @@ public class WifiHelper
 
 		return config;
 	}
+
 	private WifiConfiguration IsExsits(String SSID)
 	{
 		List<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
@@ -156,18 +186,16 @@ public class WifiHelper
 		}
 		return null;
 	}
+
 	/**
 	 * 判断wifi是否连接成功,不是network
 	 *
-	 * @param context
 	 * @return
 	 */
-	public int isWifiContected(Context context)
+	public int isWifiContected()
 	{
-		ConnectivityManager connectivityManager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo wifiNetworkInfo = connectivityManager
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		ConnectivityManager connectivityManager = (ConnectivityManager) BaseApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 
 		if (wifiNetworkInfo.getDetailedState() == NetworkInfo.DetailedState.OBTAINING_IPADDR
@@ -183,12 +211,23 @@ public class WifiHelper
 		}
 	}
 
+	public List<ScanResult> getScanResult()
+	{
+		return wifiManager.getScanResults();
+	}
+
+	public boolean isWifiEnabled()
+	{
+		return wifiManager.isWifiEnabled();
+	}
+
 	// 断开指定ID的网络
 	public void disconnectWifi(int netId)
 	{
 		wifiManager.disableNetwork(netId);
 		wifiManager.disconnect();
 	}
+
 	// 锁定WifiLock
 	public void acquireWifiLock()
 	{

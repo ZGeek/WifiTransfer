@@ -7,7 +7,7 @@ import y.q.wifisend.Base.BaseActivity;
  */
 
 /***
- * 个人页面的设置Activuty
+ * 个人页面的设置Activity
  */
 public class SettingActivity extends BaseActivity {
 }

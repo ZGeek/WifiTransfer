@@ -211,6 +211,7 @@ public class CircleImageView extends ImageView {
             drawable.draw(canvas);
             return bitmap;
         } catch (OutOfMemoryError e) {
+            e.printStackTrace();
             return null;
         }
     }

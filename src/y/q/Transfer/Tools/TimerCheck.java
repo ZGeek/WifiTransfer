@@ -8,6 +8,7 @@ public abstract class TimerCheck
 	private int mSleepTime = 1000; // 1s
 	private boolean mExitFlag = false;
 	private boolean isRuning = false;
+	private boolean isRuned = false;
 	private Thread mThread = null;
 
 	/**
@@ -24,6 +25,7 @@ public abstract class TimerCheck
 			@Override
 			public void run()
 			{
+				isRuned = true;
 				isRuning = true;
 				while (!mExitFlag)
 				{
@@ -73,4 +75,8 @@ public abstract class TimerCheck
 		return isRuning;
 	}
 
+	public boolean isRuned()
+	{
+		return isRuned;
+	}
 }

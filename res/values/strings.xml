@@ -4,5 +4,18 @@
     <string name="my_send">我要发文件</string>
     <string name="my_receive">我要收文件</string>
     <string name="inviteFriends">＋邀请好友安装</string>
-    <string name="choseRevicer">等待接收</string>
+    <string name="choseRevicer">选择接收者</string>
+    <string name="hasChosed">已选(%d)</string>
+    <string name="pleaseChoseFile">选择要传输的文件</string>
+    <string name="pleaseChoseReciver">选择接收者</string>
+    <string name="initing">正在初始化</string>
+    <string name="scaning">正在努力扫描接收者......</string>
+    <string name="waiting">等待发送者连接</string>
+    <string name="finish">完成</string>
+    <string name="sendding">正在发送...</string>
+    <string name="reciving">正在接收...</string>
+    <string name="historyDis">传输历史</string>
+    <string name="apIniting">正在初始化，请稍等......</string>
+    <string name="apInitFinish">初始化完成，正在等待发送方连接</string>
+    <string name="apInitFail">初始化失败，请重试或重启程序</string>
 </resources>

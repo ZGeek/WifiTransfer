@@ -6,8 +6,9 @@ package y.q.wifisend.Activity;
 
 import y.q.wifisend.Base.BaseActivity;
 
-/***
+/**
  * 显示接收历史的Activity
  */
-public class ReciveHistoryActivity extends BaseActivity {
+public class ReciveHistoryActivity extends BaseActivity
+{
 }

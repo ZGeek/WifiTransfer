@@ -7,4 +7,5 @@
     <color name="sendBack_press">#ff3cc954</color>
     <color name="titleBarBack">#00B6D3</color>
     <color name="divlerLine">#ff656565</color>
+    <color name="grey">#53555555</color>
 </resources>

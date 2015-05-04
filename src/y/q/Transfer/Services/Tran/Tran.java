@@ -5,6 +5,9 @@ import y.q.wifisend.Entry.SendFileInfo;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,24 +23,45 @@ public class Tran
 	{
 		heads = new HashMap<>();
 	}
+
 	public Tran(SendFileInfo info, Range range)
 	{
 		heads = new HashMap<>();
-		heads.put("Content-Length", String.valueOf(range.endByte - range.beginByte +1));
-		heads.put("Range", range.beginByte+"-"+range.getEndByte());
-		heads.put("File-Name", TranTool.getFileNameByPath(info.getFile()));
-		heads.put("Content-Type", TranTool.getTypeBySubfix(TranTool.getSubFix(info.getFile())));
+
+		setParameter("Content-Length", String.valueOf(range.endByte - range.beginByte));
+		setParameter("Range", range.beginByte + "-" + range.getEndByte());
+		setParameter("Content-Type", "" + info.getFileType());
+		setParameter("File-Name", TranTool.getFileNameByPath(info.getFilepath()));
+		setParameter("File-Desc", info.getFileDesc());
 	}
+
 	public void setParameter(String key, String value)
 	{
-		heads.put(key, value);
+		try
+		{
+			if (key.equals("File-Name") || key.equals("File-Desc"))
+				value = URLEncoder.encode(value, "UTF-8");
+			heads.put(key, value);
+		} catch (UnsupportedEncodingException e)
+		{
+		}
+
 	}
 
 	public String getParameter(String key)
 	{
-		return heads.get(key);
+		String str = heads.get(key);
+		if (key.equals("File-Name") || key.equals("File-Desc"))
+		{
+			try
+			{
+				return   URLDecoder.decode(str, "UTF-8");
+			} catch (UnsupportedEncodingException e)
+			{
+			}
+		}
+		return str;
 	}
-
 
 
 	public Range getRange()
@@ -56,28 +80,35 @@ public class Tran
 		return Integer.parseInt(len);
 	}
 
+	public String getFileDesc()
+	{
+		return getParameter("File-Desc");
+	}
+
 	public String getContentType()
 	{
-		return heads.get("Content-Type");
+		return getParameter("Content-Type");
 	}
+
 	public void paseLine(String line)
 	{
 		int index = line.indexOf(": ");
-		if(index <0 )
+		if (index < 0)
 			throw new IllegalArgumentException(line);
 		String key = line.substring(0, index);
-		String value = line.substring(index+2);
-		this.setParameter(key, value);
+		String value = line.substring(index + 2);
+//		this.setParameter(key, value);
+		heads.put(key, value);
 	}
 
 	public void writeToOStream(BufferedOutputStream outputStream) throws IOException
 	{
 		Iterator<Map.Entry<String, String>> iterator = heads.entrySet().iterator();
-		if(iterator != null)
+		if (iterator != null)
 			while (iterator.hasNext())
 			{
 				Map.Entry<String, String> item = iterator.next();
-				outputStream.write((item.getKey()+": "+item.getValue()+"\r\n").getBytes());
+				outputStream.write((item.getKey() + ": " + item.getValue() + "\r\n").getBytes());
 			}
 	}
 

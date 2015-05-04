@@ -3,10 +3,13 @@ package y.q.Transfer.Tools;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import y.q.Transfer.Broadcast.ApStateBroadcastReciver;
+import android.util.Log;
+import y.q.Transfer.Reciver.ApStateBroadcastReciver;
 import y.q.wifisend.Base.BaseApplication;
+import y.q.wifisend.Utils.LogUtil;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -17,14 +20,15 @@ public class WifiApHelper
 {
 	private WifiManager wifiManager = null;
 	private WifiHelper wifihelper = null;
-	private ApClosedCheckTimer closedCheckTimer;
-	private ApOpenedCheckTimer openedCheckTimer;
+	private ApClosedCheckTimer closedCheckTimer = new ApClosedCheckTimer();
+	private ApOpenedCheckTimer openedCheckTimer = new ApOpenedCheckTimer();
 
 	public WifiApHelper()
 	{
 		wifiManager = (WifiManager) BaseApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
 		wifihelper = new WifiHelper();
 	}
+
 	public WifiApHelper(WifiHelper wifihelper)
 	{
 		wifiManager = (WifiManager) BaseApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
@@ -39,7 +43,7 @@ public class WifiApHelper
 		config.allowedKeyManagement.clear();
 		config.allowedPairwiseCiphers.clear();
 		config.allowedProtocols.clear();
-		config.SSID = "\"" + SSID + "\"";
+		config.SSID = SSID;
 
 
 		WifiConfiguration tempConfig = this.isExsits(SSID);
@@ -66,8 +70,16 @@ public class WifiApHelper
 		return null;
 	}
 
-	public void openWifiAp(String SSID)
+	/**
+	 * 打开名称为SSID的wifi
+	 *
+	 * @param SSID       要建立的ap的名称
+	 * @param needReturn 是否需要返回WifiConfiguration
+	 * @return
+	 */
+	public WifiConfiguration openWifiAp(String SSID, boolean needReturn)
 	{
+		LogUtil.i(this, "openWifiAp");
 		ApStateBroadcastReciver.sendBroadcast(ApStateBroadcastReciver.WIFI_AP_OPENING);
 		try
 		{
@@ -77,24 +89,48 @@ public class WifiApHelper
 		{
 			e.printStackTrace();
 		}
-		if(openedCheckTimer == null)
-			openedCheckTimer = new ApOpenedCheckTimer();
-		if(!openedCheckTimer.isRuning())
+		if (!openedCheckTimer.isRuning())
+		{
+			if(openedCheckTimer.isRuned())
+				openedCheckTimer = new ApOpenedCheckTimer();
 			openedCheckTimer.start(20, 500);
+		}
+		if (needReturn)
+		{
+			try
+			{
+				Method method = wifiManager.getClass().getDeclaredMethod("getWifiApConfiguration");
+				method.setAccessible(true);
+				return (WifiConfiguration) method.invoke(wifiManager);
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 
 
-	public void closeWifiAp()
+	/**
+	 * 关闭热点
+	 *
+	 * @param config 关闭热点时重新写入的WIFI配置
+	 */
+	public void closeWifiAp(WifiConfiguration config)
 	{
+		LogUtil.i(this, "closeWifiAp");
 		if (isApEnabled())
 		{
 			ApStateBroadcastReciver.sendBroadcast(ApStateBroadcastReciver.WIFI_AP_CLOSING);
 			try
 			{
-				Method method = wifiManager.getClass().getMethod("getWifiApConfiguration");
-				method.setAccessible(true);
-
-				WifiConfiguration config = (WifiConfiguration) method.invoke(wifiManager);
+				if (config == null)
+				{
+					Method method = wifiManager.getClass().getMethod("getWifiApConfiguration");
+					method.setAccessible(true);
+					config = (WifiConfiguration) method.invoke(wifiManager);
+				}
 
 				Method method2 = wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
 				method2.invoke(wifiManager, config, false);
@@ -102,10 +138,13 @@ public class WifiApHelper
 			{
 				e.printStackTrace();
 			}
-			if(closedCheckTimer == null)
-				closedCheckTimer = new ApClosedCheckTimer();
-			if(!closedCheckTimer.isRuning())
+			if (!closedCheckTimer.isRuning())
+			{
+				if (closedCheckTimer.isRuned())
+					closedCheckTimer = new ApClosedCheckTimer();
 				closedCheckTimer.start(20, 500);
+			}
+
 		}
 	}
 
@@ -130,7 +169,7 @@ public class WifiApHelper
 		@Override
 		public void doTimerCheckWork()
 		{
-			if(!isApEnabled())
+			if (!isApEnabled())
 			{
 				ApStateBroadcastReciver.sendBroadcast(ApStateBroadcastReciver.WIFI_AP_CLOSED);
 				exit();
@@ -150,7 +189,7 @@ public class WifiApHelper
 		@Override
 		public void doTimerCheckWork()
 		{
-			if(isApEnabled())
+			if (isApEnabled())
 			{
 				ApStateBroadcastReciver.sendBroadcast(ApStateBroadcastReciver.WIFI_AP_OPENED);
 				exit();

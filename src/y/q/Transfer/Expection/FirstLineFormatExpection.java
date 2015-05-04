@@ -7,7 +7,7 @@ public class FirstLineFormatExpection extends RuntimeException
 {
 	public FirstLineFormatExpection()
 	{
-		super("Ê×ĞĞ¸ñÊ½»¯´íÎó");
+		super("é¦–è¡Œæ ¼å¼åŒ–é”™è¯¯");
 	}
 
 	public FirstLineFormatExpection(String detailMessage)

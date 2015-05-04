@@ -2,17 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="match_parent" android:background="@color/titleBarBack"
+              android:layout_height="match_parent"
+              android:background="@color/titleBarBack"
               android:gravity="center_vertical">
 
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView" android:src="@mipmap/iv_back"/>
+            android:id="@+id/iv_back"
+            android:src="@mipmap/iv_back"/>
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="这是标题"
-            android:id="@+id/textView3" android:textSize="24sp" android:textColor="@color/title"
+            android:id="@+id/tv_title"
+            android:textSize="20sp"
+            android:textColor="@color/title"
             android:layout_marginLeft="10dp"/>
 </LinearLayout>

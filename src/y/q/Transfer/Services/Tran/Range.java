@@ -1,9 +1,11 @@
 package y.q.Transfer.Services.Tran;
 
+import java.io.Serializable;
+
 /**
  * Created by Cfun on 2015/4/26.
  */
-public class Range
+public class Range implements Serializable
 {
 	int beginByte;
 	int endByte;
@@ -60,5 +62,14 @@ public class Range
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Range{" +
+				"beginByte=" + beginByte +
+				", endByte=" + endByte +
+				'}';
 	}
 }

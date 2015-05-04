@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
               android:layout_width="match_parent"
               android:layout_height="match_parent" >
 
     <include
+            android:id="@+id/titleBar"
             layout="@layout/title_bar"
             android:layout_width="match_parent"
             android:layout_height="45dp"/>
     <y.q.PageIndicator.TabPageIndicator
             android:id="@+id/indicator"
+            android:layout_below="@id/titleBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
     </y.q.PageIndicator.TabPageIndicator>
+    <include
+            android:layout_alignParentBottom="true"
+            android:id="@+id/buttonBar"
+            layout="@layout/bottom_two_button"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"/>
     <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
+            android:layout_below="@id/indicator"
+            android:layout_above="@id/buttonBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
     </android.support.v4.view.ViewPager>
-    <include layout="@layout/bottom_two_button"/>
-</LinearLayout>
+
+</RelativeLayout>

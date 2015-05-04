@@ -2,11 +2,19 @@
           package="y.q.wifisend">
 
     <uses-sdk android:minSdkVersion="13"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"></uses-permission>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
     <application
+            android:screenOrientation="portrait"
             android:allowBackup="true"
             android:name=".Base.BaseApplication"
             android:label="@string/app_name"
@@ -19,8 +27,15 @@
                 <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.ScanReciverActivity"/>
-        <activity android:name=".Activity.FileChoseActivity"/>
+        <activity android:name=".Activity.Send.ScanReciverActivity"/>
+        <activity android:name=".Activity.Send.FileChoseActivity"/>
+        <activity android:name=".Activity.ReciveHistoryActivity"/>
+        <activity android:name=".Activity.Send.SendingActivity"/>
+        <activity android:name=".Activity.SettingActivity"/>
+        <activity android:name=".Activity.Recive.ReciveActivity"/>
+
+        <service android:name="y.q.Transfer.Services.send.SendService"/>
+        <service android:name="y.q.Transfer.Services.receive.ReceiveService"/>
     </application>
 
 </manifest>

@@ -7,4 +7,12 @@ import java.io.IOException;
  */
 public class UnExpectedEndOfStream extends IOException
 {
+	public UnExpectedEndOfStream()
+	{
+	}
+
+	public UnExpectedEndOfStream(String detailMessage)
+	{
+		super(detailMessage);
+	}
 }

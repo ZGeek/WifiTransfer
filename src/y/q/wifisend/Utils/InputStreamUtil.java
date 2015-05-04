@@ -32,6 +32,7 @@ public class InputStreamUtil
 				sb.append((char)ch);
 			else
 				break;
+			ch =  inputStream.read();
 		}
 		if(sb.charAt(sb.length()-1) == '\r')
 			sb.setLength(sb.length()-1);
