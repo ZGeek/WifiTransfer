@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-	<corners
-			android:radius="20dp"
-			android:topRightRadius="0dp"
-			android:bottomRightRadius="0dp"/><!-- 设置圆角半径 -->
-	<solid
-			android:color="#009FCE"/><!-- 填充的颜色 -->
-</shape>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item>
+		<shape xmlns:android="http://schemas.android.com/apk/res/android">
+			<corners
+					android:radius="20dp"
+					android:topRightRadius="0dp"
+					android:bottomRightRadius="0dp"/><!-- 设置圆角半径 -->
+			<solid
+					android:color="#ff0074a0"/><!-- 填充的颜色 -->
+		</shape>
+	</item>
+	<item android:state_pressed="true">
+		<shape xmlns:android="http://schemas.android.com/apk/res/android">
+			<corners
+					android:radius="20dp"
+					android:topRightRadius="0dp"
+					android:bottomRightRadius="0dp"/><!-- 设置圆角半径 -->
+			<solid
+					android:color="#009FCE"/><!-- 填充的颜色 -->
+		</shape>
+	</item>
+</selector>

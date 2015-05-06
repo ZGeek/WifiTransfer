@@ -16,5 +16,7 @@
     <orderEntry type="jdk" jdkName="Android API 17 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="universal-image-loader-1.9.3-with-sources" level="project" />
+    <orderEntry type="library" name="litepal-1.2.0-src" level="project" />
   </component>
 </module>

@@ -1,5 +1,6 @@
 package y.q.Transfer.Services.Tran;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -12,6 +13,20 @@ public class Range implements Serializable
 
 	public Range()
 	{
+	}
+
+	public Range(int st)
+	{
+	}
+
+	public Range(int beginByte, int endByte)
+	{
+		setBeginByte(beginByte);
+		setEndByte(endByte);
+	}
+	public static Range getByPath(String path)
+	{
+		return new Range(0, (int) new File(path).length());
 	}
 
 	public Range(String str)

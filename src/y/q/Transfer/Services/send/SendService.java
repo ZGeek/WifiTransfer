@@ -219,7 +219,7 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 		} else
 		{
 //			bind.connectionSSID(targetSSID);
-			wifiHelper.addNetwork(targetSSID, "", WifiHelper.TYPE_NO_PASSWD);
+//			wifiHelper.addNetwork(targetSSID, "", WifiHelper.TYPE_NO_PASSWD);
 		}
 	}
 
@@ -259,12 +259,7 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 			connectivityChangeReciver.setOnWifiConnectivityChangeListener(SendService.this);
 			connectivityChangeReciver.registerSelf();
 
-			int state = wifiHelper.isWifiContected();
-//			if (state == WifiHelper.WIFI_CONNECTING || state == WifiHelper.WIFI_CONNECTED)
-//			{
-//				wifiHelper.disableCurrent();
-//			} else
-//			{
+//			int state = wifiHelper.isWifiContected();
 			wifiHelper.addNetwork(ssid, "", WifiHelper.TYPE_NO_PASSWD);
 //			}
 

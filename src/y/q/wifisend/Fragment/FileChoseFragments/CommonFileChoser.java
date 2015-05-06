@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import y.q.wifisend.Base.BaseFragment;
+import y.q.wifisend.Entry.SendFileInfo;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by CFun on 2015/4/21.
  */
-public class CommonFileChoser extends BaseFragment
+public class CommonFileChoser extends BaseFragment implements GetChoseFile
 {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -22,5 +23,11 @@ public class CommonFileChoser extends BaseFragment
 		textView.setText(this.getClass().getSimpleName());
 		textView.setTextSize(30);
 		return textView;
+	}
+
+	@Override
+	public Collection<SendFileInfo> getChosedFile()
+	{
+		return null;
 	}
 }

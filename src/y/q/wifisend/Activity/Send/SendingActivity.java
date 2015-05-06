@@ -222,7 +222,6 @@ public class SendingActivity extends BaseActivity implements View.OnClickListene
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
-			SendFileInfo data = sendFileInfos.get(position);
 			if (convertView == null)
 			{
 				convertView = inflater.inflate(R.layout.send_recive_list_item, null);
@@ -236,12 +235,12 @@ public class SendingActivity extends BaseActivity implements View.OnClickListene
 				holder.progressBar.setMax(100);
 			}
 			ViewHolder holder = (ViewHolder) convertView.getTag();
-			holder.data = data;
-			holder.img.setImageDrawable(IcoUtil.getIco(data.getFileType(), data.getFilepath()));
-			holder.fileSize.setText(FileSizeFormatUtil.format(data.getTransRange().getEndByte() - data.getTransRange().getBeginByte()));
-			holder.sendPercent.setText(data.getSendPercent() * 100 + "%");
-			holder.fileName.setText(data.getFileDesc());
-			holder.progressBar.setProgress((int) (data.getSendPercent() * 100));
+			holder.data =  sendFileInfos.get(position);
+			holder.img.setImageDrawable(IcoUtil.getIco(holder.data.getFileType(), holder.data.getFilepath()));
+			holder.fileSize.setText(FileSizeFormatUtil.format(holder.data.getTransRange().getEndByte() - holder.data.getTransRange().getBeginByte()));
+			holder.sendPercent.setText(holder.data.getSendPercent() * 100 + "%");
+			holder.fileName.setText(holder.data.getFileDesc());
+			holder.progressBar.setProgress((int) (holder.data.getSendPercent() * 100));
 			return convertView;
 		}
 

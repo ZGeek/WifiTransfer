@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="10dp"
+        >
+<ImageView
+
+        android:id="@+id/img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"/>
+
+    <ImageView
+            android:src="@mipmap/check_on"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/check"
+            android:layout_centerVertical="true"/>
+
+    <LinearLayout
+            android:layout_toEndOf="@id/img"
+            android:layout_toLeftOf="@+id/check"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp">
+        <TextView
+                android:id="@+id/audioName"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="laoshu"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:singleLine="true"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+            <TextView
+                    android:id="@+id/artile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="歌手"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textSize="14sp"/>
+            <TextView
+                    android:id="@+id/size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="大小"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

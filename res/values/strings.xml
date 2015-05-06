@@ -3,7 +3,7 @@
     <string name="app_name">WIFI快传</string>
     <string name="my_send">我要发文件</string>
     <string name="my_receive">我要收文件</string>
-    <string name="inviteFriends">＋邀请好友安装</string>
+    <string name="inviteFriends">＋蓝牙分享给好友</string>
     <string name="choseRevicer">选择接收者</string>
     <string name="hasChosed">已选(%d)</string>
     <string name="pleaseChoseFile">选择要传输的文件</string>
@@ -11,6 +11,7 @@
     <string name="initing">正在初始化</string>
     <string name="scaning">正在努力扫描接收者......</string>
     <string name="waiting">等待发送者连接</string>
+    <string name="linking">正在连接 %s</string>
     <string name="finish">完成</string>
     <string name="sendding">正在发送...</string>
     <string name="reciving">正在接收...</string>
@@ -18,4 +19,12 @@
     <string name="apIniting">正在初始化，请稍等......</string>
     <string name="apInitFinish">初始化完成，正在等待发送方连接</string>
     <string name="apInitFail">初始化失败，请重试或重启程序</string>
+    <string name="setting">个人设置</string>
+    <string name="cancle">取消</string>
+    <string name="save">保存</string>
+    <string name="nameIgnoreWaring">名称不能为空</string>
+    <string name="cleanHistory">清空历史</string>
+    <string name="history">传输历史</string>
+    <string name="reciveHistoryCleanAll">传输历史已清空</string>
+    <string name="fileNotFound">文件已被移动或删除，无法打开</string>
 </resources>

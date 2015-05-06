@@ -30,9 +30,7 @@ public class FileChoseChangedReciver extends BaseReciver
 			if (onFileChoseChangedListener != null)
 			{
 				boolean increse = intent.getBooleanExtra("increse", false);
-				String path = intent.getStringExtra("path");
-				FileType type = (FileType)intent.getSerializableExtra("type");
-				onFileChoseChangedListener.onFileChoseChang(increse, type, path);
+				onFileChoseChangedListener.onFileChoseChang(increse);
 			}
 
 		}
@@ -40,7 +38,7 @@ public class FileChoseChangedReciver extends BaseReciver
 
 	public interface OnFileChoseChangedListener
 	{
-		void onFileChoseChang(boolean increse,final FileType type, final String filePath);
+		void onFileChoseChang(boolean increse);
 	}
 
 	public void setOnFileChoseChangedListener(OnFileChoseChangedListener onFileChoseChangedListener)
@@ -48,12 +46,10 @@ public class FileChoseChangedReciver extends BaseReciver
 		this.onFileChoseChangedListener = onFileChoseChangedListener;
 	}
 
-	public static void sendBroadcast(boolean increse, String path, FileType type)
+	public static void sendBroadcast(boolean increse)
 	{
 		Intent intent = new Intent(FileChoseChangedReciver.class.getName());
-		intent.putExtra("path", path);
 		intent.putExtra("increse", increse);
-		intent.putExtra("type", type);
 		BaseApplication.getInstance().sendBroadcast(intent);
 	}
 }

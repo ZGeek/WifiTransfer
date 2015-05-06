@@ -9,11 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import y.q.Transfer.Services.Tran.Range;
 import y.q.wifisend.Base.BaseApplication;
 import y.q.wifisend.Base.BaseFragment;
 import y.q.wifisend.Entry.FileType;
+import y.q.wifisend.Entry.SendFileInfo;
+import y.q.wifisend.Entry.SendStatus;
 import y.q.wifisend.R;
 import y.q.wifisend.Reciver.FileChoseChangedReciver;
+import y.q.wifisend.Utils.ApNameUtil;
+import y.q.wifisend.Utils.ApkUtil;
 import y.q.wifisend.Utils.FileSizeFormatUtil;
 
 import java.io.File;
@@ -22,7 +27,7 @@ import java.util.*;
 /**
  * Created by CFun on 2015/4/21.
  */
-public class AppFileChoser extends BaseFragment implements AdapterView.OnItemClickListener
+public class AppFileChoser extends BaseFragment implements AdapterView.OnItemClickListener, GetChoseFile
 {
 	private GridView gridView;
 	private Context context;
@@ -53,11 +58,6 @@ public class AppFileChoser extends BaseFragment implements AdapterView.OnItemCli
 		return gridView;
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-	}
 
 	public static List<PackageInfo> getAllUserAppInfo()
 	{
@@ -80,16 +80,35 @@ public class AppFileChoser extends BaseFragment implements AdapterView.OnItemCli
 		if (holder.ivChecked.getVisibility() == View.VISIBLE)
 		{
 			holder.ivChecked.setVisibility(View.GONE);
-			FileChoseChangedReciver.sendBroadcast(false, holder.filePath, type);
+			FileChoseChangedReciver.sendBroadcast(false);
 			fileChose.remove(holder.filePath);
 		} else
 		{
 			holder.ivChecked.setVisibility(View.VISIBLE);
-			FileChoseChangedReciver.sendBroadcast(true, holder.filePath, type);
+			FileChoseChangedReciver.sendBroadcast(true);
 			fileChose.add(holder.filePath);
 		}
 	}
 
+	@Override
+	public Collection<SendFileInfo> getChosedFile()
+	{
+		List<SendFileInfo> infos = new LinkedList<>();
+		Iterator<String> iterator = fileChose.iterator();
+		while (iterator.hasNext())
+		{
+			String path= iterator.next();
+			SendFileInfo info = new SendFileInfo();
+			info.setFileDesc(ApkUtil.getAPPName(path));
+			info.setTransRange(Range.getByPath(path));
+			info.setSendPercent(0);
+			info.setSendStatu(SendStatus.SenddingBegin);
+			info.setFileType(FileType.app);
+			info.setFilepath(path);
+			infos.add(info);
+		}
+		return infos;
+	}
 
 
 	class AppAdapter extends BaseAdapter

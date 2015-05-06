@@ -44,7 +44,7 @@ public class ScanReciverResultReciver extends BaseReciver
 		void onScanReciverResultAviable(ArrayList<ApNameInfo> infos);
 	}
 
-	public void setOnFileChoseChangedListener(OnScanReciverResultAvilableListener onScanReciverResultAvilableListener)
+	public void setOnScanReciverResultAvilableListener(OnScanReciverResultAvilableListener onScanReciverResultAvilableListener)
 	{
 		this.onScanReciverResultAvilableListener = onScanReciverResultAvilableListener;
 	}

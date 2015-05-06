@@ -25,6 +25,7 @@ import y.q.wifisend.R;
 import y.q.wifisend.Reciver.ConnectToTargetWifiReciver;
 import y.q.wifisend.Reciver.ScanReciverResultReciver;
 import y.q.wifisend.Utils.ApNameUtil;
+import y.q.wifisend.widget.CircleImageView;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -44,15 +45,35 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 
 	private LinearLayout[] layouts = new LinearLayout[10];
 	private TextView infoText = null;
+	private View scanResultView;
 	private int hasAddCount = 0;
 	private ScanReciverResultReciver scanReciverResultReciver = new ScanReciverResultReciver();
 	private ConnectToTargetWifiReciver connectToTargetWifiReciver = new ConnectToTargetWifiReciver();
 
-	private int[] photoIds = {R.mipmap.head_portrait_1, R.mipmap.head_portrait_2, R.mipmap.head_portrait_3};
+
 	private SendService.SendActionBinder binder;
 	private ServiceConnection serviceConnection;
 	private ApNameInfo info;
 	private boolean hasReSize = false;
+//	private CircleImageView iv_photo;
+
+	private static final int MSG_SCAN_AP = 1;
+	private static final int MSG_ENABLE_VIEW = 2;
+	private Handler handler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			if (msg.what == MSG_SCAN_AP)
+			{
+				binder.scanAP();
+			} else if (msg.what == MSG_ENABLE_VIEW)
+			{
+				if (scanResultView != null)
+					scanResultView.setEnabled(true);
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -60,7 +81,7 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.scan_reciver);
 		initView();
-		scanReciverResultReciver.setOnFileChoseChangedListener(this);
+		scanReciverResultReciver.setOnScanReciverResultAvilableListener(this);
 		scanReciverResultReciver.registerSelf();
 		connectToTargetWifiReciver.setOnConnectToTargetWifiListener(this);
 		connectToTargetWifiReciver.registerSelf();
@@ -86,19 +107,19 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 
 	private void initView()
 	{
-		View view = findViewById(R.id.scanResult);
+		scanResultView = findViewById(R.id.scanResult);
 
 
 		layouts[0] = null;
-		layouts[1] = (LinearLayout) view.findViewById(R.id.v1);
-		layouts[2] = (LinearLayout) view.findViewById(R.id.v2);
-		layouts[3] = (LinearLayout) view.findViewById(R.id.v3);
-		layouts[4] = (LinearLayout) view.findViewById(R.id.v4);
+		layouts[1] = (LinearLayout) scanResultView.findViewById(R.id.v1);
+		layouts[2] = (LinearLayout) scanResultView.findViewById(R.id.v2);
+		layouts[3] = (LinearLayout) scanResultView.findViewById(R.id.v3);
+		layouts[4] = (LinearLayout) scanResultView.findViewById(R.id.v4);
 		layouts[5] = null;
-		layouts[6] = (LinearLayout) view.findViewById(R.id.v6);
-		layouts[7] = (LinearLayout) view.findViewById(R.id.v7);
-		layouts[8] = (LinearLayout) view.findViewById(R.id.v8);
-		layouts[9] = (LinearLayout) view.findViewById(R.id.v9);
+		layouts[6] = (LinearLayout) scanResultView.findViewById(R.id.v6);
+		layouts[7] = (LinearLayout) scanResultView.findViewById(R.id.v7);
+		layouts[8] = (LinearLayout) scanResultView.findViewById(R.id.v8);
+		layouts[9] = (LinearLayout) scanResultView.findViewById(R.id.v9);
 
 //		((TextView) findViewById(R.id.tv_name)).setText(AppConfig.userName);
 		infoText = (TextView) findViewById(R.id.tv_info);
@@ -113,6 +134,8 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 			}
 		});
 		((TextView) findViewById(R.id.tv_title)).setText(R.string.choseRevicer);
+
+		((CircleImageView)findViewById(R.id.iv_photo)).setImageResource(AppConfig.getPhotoResorce());
 	}
 
 	@Override
@@ -135,6 +158,7 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 	{
 
 		connectToTargetWifiReciver.unRegisterSelf();
+		scanReciverResultReciver.unRegisterSelf();
 		unbindService(serviceConnection);
 		super.onDestroy();
 	}
@@ -151,14 +175,41 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 		super.onStop();
 	}
 
-	private void clearItem()
+	private void clearItem(ArrayList<ApNameInfo> scanInfo)
 	{
 		for (int i = 1; i < 10; i++)
 		{
-			if (layouts[i] != null)
+			if (layouts[i] == null)
+				continue;
+			int count = layouts[i].getChildCount();
+			if (count <= 0)
+				continue;
+			ApNameInfo info = (ApNameInfo) layouts[i].getChildAt(0).getTag();
+//			int temp = -1;
+//			boolean eq = false;
+//			for(int j=0; j<scanInfo.size(); j++)
+//			{
+//				eq = scanInfo.get(j).equals(info);
+//				if(eq)
+//				{
+//					temp =j;
+//					break;
+//				}
+//			}
+//			if(eq)
+//			{
+//				scanInfo.remove(temp);
+//				continue;
+//			}
+			if (scanInfo.contains(info))
+			{
+				scanInfo.remove(info);
+			} else
+			{
 				layouts[i].removeAllViews();
+				hasAddCount--;
+			}
 		}
-		hasAddCount = 0;
 	}
 
 	private void addItem(ApNameInfo info)
@@ -176,7 +227,7 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view = inflater.inflate(R.layout.scan_result_item, null);
 		layouts[i].addView(view);
-		((ImageView) view.findViewById(R.id.ivPhoto)).setImageResource(photoIds[info.getPhotoId()]);
+		((ImageView) view.findViewById(R.id.ivPhoto)).setImageResource(AppConfig.getPhotoResorce(info.getPhotoId()));
 		((TextView) view.findViewById(R.id.tvName)).setText(info.getName());
 		view.setOnClickListener(this);
 		view.setTag(info);
@@ -188,34 +239,30 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 	{
 		info = (ApNameInfo) v.getTag();
 		binder.connectionSSID(ApNameUtil.encodeApName(info));
+		infoText.setText(String.format(getString(R.string.linking), info.getName()));
+		scanResultView.setEnabled(false);
+		handler.sendEmptyMessageDelayed(MSG_ENABLE_VIEW, 5000);
 	}
-	private Handler handler = new Handler()
-	{
-		@Override
-		public void handleMessage(Message msg)
-		{
-			if(msg.what == 1)
-			{
-				binder.scanAP();
-			}
-		}
-	};
+
+
 	@Override
 	public void onScanReciverResultAviable(ArrayList<ApNameInfo> infos)
 	{
-		if(infos.size() >0)
+		if (scanResultView.isEnabled())
+			infoText.setText(R.string.scaning);//只有enable的时候才可以改变
+		if (hasAddCount > 0)
+			clearItem(infos);
+
+		if (infos.size() > 0)
 		{
-			if (hasAddCount > 0)
-				clearItem();
 			for (int i = 0; i < infos.size(); i++)
 			{
 				ApNameInfo info = infos.get(i);
 				addItem(info);
 			}
 		}
-
-		handler.removeMessages(1);
-		handler.sendEmptyMessageDelayed(1, 5000);//10秒新数据未到达就进行一次扫描
+		handler.removeMessages(MSG_SCAN_AP);
+		handler.sendEmptyMessageDelayed(MSG_SCAN_AP, 5000);//5秒新数据未到达就进行一次扫描
 	}
 
 	private void binderService()
@@ -260,9 +307,10 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 		intent.putExtras(bundle);
 		startActivity(intent);
 		scanReciverResultReciver.unRegisterSelf();
-		handler.removeMessages(1);
+		handler.removeMessages(MSG_SCAN_AP);
 		this.finish();
 	}
+
 	private String intToIp(int i)
 	{
 		return (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF) + "." + (i >> 24 & 0xFF);

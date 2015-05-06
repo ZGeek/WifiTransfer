@@ -92,7 +92,7 @@ public class ReceiveAction
 		}
 	}
 
-	protected static String makePath(Tran tran)
+	public static String makePath(Tran tran)
 	{
 		String path = Config.baseDir;
 		path = path + "/" + tran.getContentType() + "/" + tran.getParameter("File-Name");

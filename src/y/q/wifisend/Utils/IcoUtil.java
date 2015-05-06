@@ -11,18 +11,19 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import y.q.wifisend.Base.BaseApplication;
 import y.q.wifisend.Entry.FileType;
 import y.q.wifisend.R;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 /**
  * Created by Cfun on 2015/5/3.
  */
 public class IcoUtil
 {
-	private static final float MaxHeightOrWidth = 80;
 
 	/**
 	 * 根据输入的文件类型或后缀返回程序对应的图标, 统一返回80*80等比缩放的图片
@@ -52,7 +53,7 @@ public class IcoUtil
 				case video:
 					return getVideoDrawable(filePath);
 				case image:
-					return getImageDrawable(filePath);
+					return getImgDrawable(filePath, MediaStore.Images.Thumbnails.MICRO_KIND, null);
 			}
 
 		if (subfix != null)
@@ -66,8 +67,9 @@ public class IcoUtil
 
 	}
 
-	/***
+	/**
 	 * 得到一个简单的图标，用于接收端在接收中显示的图标
+	 *
 	 * @param fileType
 	 * @param filePath
 	 * @return
@@ -106,7 +108,7 @@ public class IcoUtil
 		return resources.getDrawable(R.mipmap.file);
 	}
 
-	protected static Drawable getAPPDrawable(String path)
+	public static Drawable getAPPDrawable(String path)
 	{
 		PackageManager pm = BaseApplication.getInstance().getPackageManager();
 		PackageInfo info = pm.getPackageArchiveInfo(path, PackageManager.GET_ACTIVITIES);
@@ -115,14 +117,14 @@ public class IcoUtil
 			ApplicationInfo appInfo = info.applicationInfo;
 			appInfo.publicSourceDir = path;
 			Drawable icon = pm.getApplicationIcon(appInfo);
-			if(icon != null)
+			if (icon != null)
 				return icon;
 		}
 
 		return BaseApplication.getInstance().getResources().getDrawable(R.mipmap.apk);
 	}
 
-	protected static Drawable getSubTypeIco(Resources resources, String subfix)
+	public static Drawable getSubTypeIco(Resources resources, String subfix)
 	{
 		String subtype = FileType.parseSubType(subfix);
 		if (subtype.equals("word"))
@@ -136,38 +138,27 @@ public class IcoUtil
 		return null;
 	}
 
-	protected static Drawable getImageDrawable(String path)
+	public static Drawable getImgDrawable(String path, int kind,@Nullable Long origId)
 	{
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		// 设置为ture只获取图片大小
-		opts.inJustDecodeBounds = true;
-		opts.inPreferredConfig = Bitmap.Config.RGB_565;
-		// 返回为空
-		Bitmap bitmap = BitmapFactory.decodeFile(path, opts);
-		if (opts.outHeight > MaxHeightOrWidth || opts.outWidth > MaxHeightOrWidth)
+		Resources resources = BaseApplication.getInstance().getResources();
+		BitmapFactory.Options options=new BitmapFactory.Options();
+		options.inDither=false;
+		options.inPreferredConfig=Bitmap.Config.RGB_565;
+		if(origId != null && origId >=0)
 		{
-			int oHeight = (int) MaxHeightOrWidth;
-			int oWidth = (int) MaxHeightOrWidth;
-			if (opts.outHeight > opts.outWidth)
-			{
-				oWidth = (int) (opts.outHeight / MaxHeightOrWidth * opts.outWidth);
-			} else
-			{
-				oHeight = (int) (opts.outWidth / MaxHeightOrWidth * opts.outHeight);
-			}
-			bitmap = ThumbnailUtils.extractThumbnail(bitmap, oWidth, oHeight);
-			if (bitmap != null)
-				return new BitmapDrawable(BaseApplication.getInstance().getResources(), bitmap);
+			//尝试获取系统的缩略图
+			Bitmap bitmap = MyThumbnailUtil.getImageThumbnailBySystem(origId, kind, options);
+			if(bitmap != null)
+				return new BitmapDrawable(resources, bitmap);
 		}
-		//尝试输出原文件
-		bitmap = BitmapFactory.decodeFile(path);
-		if (bitmap != null)
-			return new BitmapDrawable(BaseApplication.getInstance().getResources(), bitmap);
-
+		//尝试截取原来的图片生成缩略图
+		Bitmap bitmap = MyThumbnailUtil.getImageThumbnail(path, kind);
+		if(bitmap!= null)
+			return new BitmapDrawable(resources, bitmap);
 		return BaseApplication.getInstance().getResources().getDrawable(R.mipmap.image);
 	}
 
-	protected static Drawable getVideoDrawable(String path)
+	public static Drawable getVideoDrawable(String path)
 	{
 		Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MICRO_KIND);
 		if (bitmap != null)

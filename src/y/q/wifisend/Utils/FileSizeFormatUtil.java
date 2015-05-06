@@ -13,11 +13,11 @@ public class FileSizeFormatUtil
 	{
 
 		if(fileSize > gb)
-			return ((int)(fileSize/gb*100))/100.0 +"GB";
+			return ((int)(fileSize/gb*100))/100.0 +"G";
 		if(fileSize > mb)
-			return ((int)(fileSize/mb*100))/100.0 +"MB";
+			return ((int)(fileSize/mb*100))/100.0 +"M";
 		if(fileSize > kb)
-			return ((int)(fileSize/kb*100))/100.0 +"KB";
+			return ((int)(fileSize/kb*100))/100.0 +"K";
 		return ((int)fileSize)+"B";
 	}
 }

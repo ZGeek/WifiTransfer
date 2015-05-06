@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+             android:layout_margin="5dp" >
+
+    <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:scaleType="center"
+            android:layout_height="150dp"
+            android:id="@+id/img"
+            android:layout_centerHorizontal="true"/>
+
+    <ImageView
+            android:visibility="gone"
+            android:layout_gravity="bottom|right"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/check"
+            android:src="@mipmap/check_on"/>
+</FrameLayout>

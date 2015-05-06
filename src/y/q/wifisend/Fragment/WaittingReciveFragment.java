@@ -42,6 +42,9 @@ public class WaittingReciveFragment extends BaseFragment implements View.OnClick
 
 		name.setText(AppConfig.userName);
 		stateInfo.setText(getString(R.string.apIniting));
+
+		photo.setImageResource(AppConfig.getPhotoResorce());
+		name.setText(AppConfig.userName);
 	}
 
 	@Override

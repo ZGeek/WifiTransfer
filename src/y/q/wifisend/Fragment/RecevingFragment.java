@@ -7,22 +7,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import y.q.Transfer.Config;
 import y.q.Transfer.Services.Tran.Range;
+import y.q.Transfer.Services.Tran.Tran;
+import y.q.Transfer.Services.Tran.TranTool;
 import y.q.wifisend.Base.BaseFragment;
 import y.q.wifisend.Entry.FileType;
+import y.q.wifisend.Entry.ReciveDbEntry;
 import y.q.wifisend.Entry.SendFileInfo;
 import y.q.wifisend.Entry.SendStatus;
 import y.q.wifisend.R;
 import y.q.wifisend.Reciver.SendStateChangedReciver;
 import y.q.wifisend.Utils.FileSizeFormatUtil;
 import y.q.wifisend.Utils.IcoUtil;
+import y.q.wifisend.Utils.OpenFiles;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Cfun on 2015/5/4.
  */
-public class RecevingFragment extends BaseFragment implements SendStateChangedReciver.OnSendStateChangedListener, SendStateChangedReciver.OnBeginTranListener, View.OnClickListener
+public class RecevingFragment extends BaseFragment implements SendStateChangedReciver.OnSendStateChangedListener, SendStateChangedReciver.OnBeginTranListener, View.OnClickListener, AdapterView.OnItemClickListener
 {
 	private ArrayList<SendFileInfo> sendFileInfos = null;
 	public ArrayList<SendFileInfo> activitySendFileInfo = null;
@@ -57,6 +64,7 @@ public class RecevingFragment extends BaseFragment implements SendStateChangedRe
 		activitySendFileInfo = null;
 		adapter = new TranListAdapter(LayoutInflater.from(getActivity()), sendFileInfos);
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -131,6 +139,13 @@ public class RecevingFragment extends BaseFragment implements SendStateChangedRe
 		if (state == SendStatus.Finish)
 		{
 			holder.img.setImageDrawable(IcoUtil.getIco(holder.data.getFileType(), holder.data.getFilepath()));
+			ReciveDbEntry entry = new ReciveDbEntry();
+			entry.setDesc(holder.data.getFileDesc());
+			entry.setFileType(holder.data.getFileType().toString());
+			entry.setInsertDate(new Date(System.currentTimeMillis()));
+			entry.setPath(holder.data.getFilepath());
+			entry.setSize(holder.data.getFileLength());
+			entry.save();
 		}
 
 	}
@@ -196,6 +211,15 @@ public class RecevingFragment extends BaseFragment implements SendStateChangedRe
 		sendFileInfo.setSendStatu(SendStatus.SenddingBegin);
 		sendFileInfos.add(sendFileInfo);
 		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	{
+		ViewHolder holder = (ViewHolder) view.getTag();
+		String path =Config.baseDir + "/" + holder.data.getFileType() + "/" + TranTool.getFileNameByPath(holder.data.getFilepath());
+		OpenFiles.openFile(getActivity(), new File(path));
+
 	}
 
 	class TranListAdapter extends BaseAdapter

@@ -12,23 +12,16 @@ import android.widget.TextView;
 import y.q.PageIndicator.TabPageIndicator;
 import y.q.PageIndicator.TabTitleAdapter;
 import y.q.PageIndicator.TabView;
-import y.q.Transfer.Services.Tran.Range;
 import y.q.wifisend.Base.BaseActivity;
-import y.q.wifisend.Entry.FileType;
 import y.q.wifisend.Entry.SendFileInfo;
 import y.q.wifisend.Fragment.FileChoseFragments.*;
 import y.q.wifisend.R;
 import y.q.wifisend.Reciver.FileChoseChangedReciver;
-import y.q.wifisend.Utils.ApkUtil;
 import y.q.wifisend.Utils.LogUtil;
 import y.q.wifisend.widget.FileChoseTab;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * Created by CFun on 2015/4/21.
@@ -40,7 +33,7 @@ public class FileChoseActivity extends BaseActivity implements FileChoseChangedR
 	private ViewPager viewPager;
 	private TextView btn1;
 	private TextView btn2;
-	private HashSet<String> fileSet;
+	private int choseFile = 0;
 	private ImageView ivBack;
 	private TextView tvTitle;
 	FileChoseChangedReciver fileChoseChanged;
@@ -54,7 +47,6 @@ public class FileChoseActivity extends BaseActivity implements FileChoseChangedR
 		fileChoseChanged = new FileChoseChangedReciver();
 		fileChoseChanged.setOnFileChoseChangedListener(this);
 		fileChoseChanged.registerSelf();
-		fileSet = new HashSet<>();
 		initView();
 	}
 
@@ -77,9 +69,9 @@ public class FileChoseActivity extends BaseActivity implements FileChoseChangedR
 
 		tvTitle.setText(R.string.pleaseChoseFile);
 		ivBack.setOnClickListener(this);
-		btn1.setEnabled(fileSet.size() > 0);
-		btn2.setEnabled(fileSet.size() > 0);
-		btn1.setText(String.format(getString(R.string.hasChosed), fileSet.size()));
+		btn1.setEnabled(choseFile > 0);
+		btn2.setEnabled(choseFile > 0);
+		btn1.setText(String.format(getString(R.string.hasChosed), choseFile));
 		btn2.setText("下一步");
 		btn2.setOnClickListener(this);
 		viewPager.setAdapter(new FileChoseAdapter(getSupportFragmentManager()));
@@ -87,17 +79,14 @@ public class FileChoseActivity extends BaseActivity implements FileChoseChangedR
 	}
 
 	@Override
-	public void onFileChoseChang(boolean increse, FileType type, String path)
+	public void onFileChoseChang(boolean increse)
 	{
-		if (increse)
-			fileSet.add(type + "://" + path);
-		else
-			fileSet.remove(type + "://" + path);
+		if (increse) choseFile++;
+		else choseFile--;
+		btn1.setEnabled(choseFile > 0);
+		btn2.setEnabled(choseFile > 0);
 
-		btn1.setEnabled(fileSet.size() > 0);
-		btn2.setEnabled(fileSet.size() > 0);
-
-		btn1.setText(String.format(getString(R.string.hasChosed), fileSet.size()));
+		btn1.setText(String.format(getString(R.string.hasChosed), choseFile));
 	}
 
 	@Override
@@ -108,7 +97,7 @@ public class FileChoseActivity extends BaseActivity implements FileChoseChangedR
 			case R.id.btn2:
 				Intent intent = new Intent(this, ScanReciverActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putSerializable("tranList", str2SendInfo(fileSet));
+				bundle.putSerializable("tranList", getAllSendFileInfo());
 				intent.putExtras(bundle);
 				startActivity(intent);
 				break;
@@ -117,49 +106,15 @@ public class FileChoseActivity extends BaseActivity implements FileChoseChangedR
 		}
 	}
 
-	private static ArrayList<SendFileInfo> str2SendInfo(Collection<String> infos)
+	private ArrayList<SendFileInfo> getAllSendFileInfo()
 	{
-		ArrayList<SendFileInfo> sendFileInfos = new ArrayList<>();
-		if (infos == null || infos.size() == 0)
-			return sendFileInfos;
-		Iterator<String> iterator = infos.iterator();
-		while (iterator.hasNext())
+		ArrayList<SendFileInfo> sendFileInfos = new ArrayList<>(30);
+		Fragment[] fragments = ((FileChoseAdapter) viewPager.getAdapter()).getFragments();
+		for (int i = 0; i < fragments.length; i++)
 		{
-			String info = iterator.next();
-			int index = info.indexOf("://");
-			if (index < 0)
-				throw new IllegalArgumentException(info);
-			String scama = info.substring(0, index);
-			FileType type = FileType.valueOf(scama);
-
-			SendFileInfo sendFileInfo = new SendFileInfo();
-			sendFileInfo.setFilepath(info.substring(index + 3));
-
-			Range range = new Range();
-
-			if(type == FileType.app)
-			{
-				sendFileInfo.setFileDesc(ApkUtil.getAPPName(sendFileInfo.getFilepath()));
-			}
-
-			if(type== FileType.contact)
-			{
-				try
-				{
-					range.setEndByte(sendFileInfo.getFilepath().getBytes("UTF-8").length);
-				} catch (UnsupportedEncodingException e)
-				{}
-			}
-			else
-			{
-				int length = (int) new File(sendFileInfo.getFilepath()).length();
-				range.setEndByte(length);
-			}
-
-			sendFileInfo.setTransRange(range);
-
-			sendFileInfo.setFileType(type);
-			sendFileInfos.add(sendFileInfo);
+			Collection<SendFileInfo> info = ((GetChoseFile) fragments[i]).getChosedFile();
+			if (info != null)
+				sendFileInfos.addAll(info);
 		}
 		return sendFileInfos;
 	}
@@ -167,6 +122,12 @@ public class FileChoseActivity extends BaseActivity implements FileChoseChangedR
 	class FileChoseAdapter extends FragmentPagerAdapter implements TabTitleAdapter
 	{
 		private String[] titles = new String[]{"文件", "应用", "联系人", "图片", "音乐", "视频"};
+
+		Fragment[] getFragments()
+		{
+			return fragments;
+		}
+
 		Fragment[] fragments = new Fragment[6];
 
 		public FileChoseAdapter(FragmentManager fm)
