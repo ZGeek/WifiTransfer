@@ -53,7 +53,6 @@ public class ReceiveTask extends Thread
 			while (!stopFlag)
 			{
 				clientSocket = serverSocket.accept();
-				clientSocket.setSoTimeout(10000);
 				if (isFirstTask)
 				{
 					isFirstTask = false;
@@ -69,14 +68,31 @@ public class ReceiveTask extends Thread
 				{
 					//如果是所有任务都完成了，则发送所有任务已完成的广播
 					SendStateChangedReciver.sendStatuChangedBroadcast(null, SendStatus.AllFinish, 1);
-					break;
+					try
+					{
+						clientSocket.close();
+					}catch (IOException e){e.printStackTrace();}
+					continue;
 				}
-				ReceiveAction.doSave(true, cmd, in, clientSocket);
+				if (cmd.equals("send") || cmd.equals("send-part"))
+				{
+					ReceiveAction.doSave(true, cmd, in, clientSocket);
+					continue;
+				}
 			}
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 			BaseApplication.showToast(e.getMessage());
+		}finally
+		{
+			try
+			{
+				serverSocket.close();
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -7,6 +7,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import y.q.Debug;
 import y.q.Transfer.Tools.admin.WifiApAdmin;
 import y.q.wifisend.Base.BaseApplication;
 import y.q.wifisend.Utils.LogUtil;

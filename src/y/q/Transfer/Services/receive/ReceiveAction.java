@@ -73,7 +73,7 @@ public class ReceiveAction
 		float oldPercent = 0;
 		byte[] buffer = new byte[Config.bufferSize];
 		int len = 0;
-		float realFileLength = contentLength;
+		final float realFileLength = contentLength;
 		while (contentLength > 0)
 		{
 			len = iStream.read(buffer, 0, Math.min(contentLength, buffer.length));
@@ -84,7 +84,7 @@ public class ReceiveAction
 			contentLength -= len;
 			accessFile.write(buffer, 0, len);
 			float currentPercent = (1 - contentLength / realFileLength);
-			if (currentPercent - oldPercent > 0.01)
+			if (currentPercent - oldPercent > 0.03)
 			{
 				SendStateChangedReciver.sendStatuChangedBroadcast(uuid, SendStatus.PercentChange, currentPercent);
 				oldPercent = currentPercent;

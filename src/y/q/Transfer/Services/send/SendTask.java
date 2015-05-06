@@ -7,6 +7,7 @@ import y.q.wifisend.Reciver.SendStateChangedReciver;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -49,6 +50,9 @@ public class SendTask extends Thread
 						throw new IOException("Not OK");
 					SendAction.doSend(out, task);
 					out.flush();
+					out.close();
+					in.close();
+					socket.close();
 				}
 				catch (IOException e)
 				{

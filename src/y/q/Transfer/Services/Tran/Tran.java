@@ -5,6 +5,7 @@ import y.q.wifisend.Entry.SendFileInfo;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -101,7 +102,7 @@ public class Tran
 		heads.put(key, value);
 	}
 
-	public void writeToOStream(BufferedOutputStream outputStream) throws IOException
+	public void writeToOStream(OutputStream outputStream) throws IOException
 	{
 		Iterator<Map.Entry<String, String>> iterator = heads.entrySet().iterator();
 		if (iterator != null)

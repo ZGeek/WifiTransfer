@@ -3,12 +3,10 @@ package y.q.Transfer.Services.send;
 import android.app.Service;
 import android.content.Intent;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.IBinder;
-import android.widget.Toast;
 import y.q.Transfer.Reciver.ApStateBroadcastReciver;
 import y.q.Transfer.Reciver.ConnectivityChangeReciver;
 import y.q.Transfer.Reciver.ScanResultAviableReciver;
@@ -16,16 +14,13 @@ import y.q.Transfer.Reciver.WifiStateBroadcastReciver;
 import y.q.Transfer.Tools.MobileDataHelper;
 import y.q.Transfer.Tools.WifiApHelper;
 import y.q.Transfer.Tools.WifiHelper;
-import y.q.wifisend.Base.BaseApplication;
 import y.q.wifisend.Entry.ApNameInfo;
 import y.q.wifisend.Entry.SendFileInfo;
 import y.q.wifisend.Reciver.ConnectToTargetWifiReciver;
 import y.q.wifisend.Reciver.ScanReciverResultReciver;
 import y.q.wifisend.Utils.ApNameUtil;
-import y.q.wifisend.Utils.LogUtil;
 
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -182,10 +177,10 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 //		{
 //			wifiHelper.disableCurrent();
 //		}
-		step4ScanApConnected();
+		step4ScanAp();
 	}
 
-	protected void step4ScanApConnected()
+	protected void step4ScanAp()
 	{
 		scanResultAviableReciver.setOnScanResultAviableListener(this);
 		scanResultAviableReciver.registerSelf();
@@ -200,21 +195,19 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 	@Override
 	public void onWifiConnectivityChange(NetworkInfo info)
 	{
-		if (info.isConnected())
+		if (info.isConnected() && info.getState() == NetworkInfo.State.CONNECTED && info.isAvailable())
 		{
-			if (info.isAvailable())
+			if (targetSSID.equals(wifiHelper.getCurrentConnectedSSID()))
 			{
-				if (info.getExtraInfo().equals("\"" + targetSSID + "\""))
-				{
-					connectivityChangeReciver.setOnWifiConnectivityChangeListener(null);
-					connectivityChangeReciver.unRegisterSelf();
-					ConnectToTargetWifiReciver.sendBroadcast(targetSSID);
-				} else
-				{
+				connectivityChangeReciver.setOnWifiConnectivityChangeListener(null);
+				connectivityChangeReciver.unRegisterSelf();
+				ConnectToTargetWifiReciver.sendBroadcast(targetSSID);
+			} else
+			{
 //					wifiHelper.disableCurrent();
-					wifiHelper.addNetwork(targetSSID, "", WifiHelper.TYPE_NO_PASSWD);
-				}
+				wifiHelper.addNetwork(targetSSID, "", WifiHelper.TYPE_NO_PASSWD);
 			}
+
 
 		} else
 		{

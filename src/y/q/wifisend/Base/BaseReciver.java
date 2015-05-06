@@ -3,6 +3,7 @@ package y.q.wifisend.Base;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import y.q.Transfer.Reciver.ApStateBroadcastReciver;
+import y.q.wifisend.Utils.LogUtil;
 
 /**
  * Created by Cfun on 2015/5/1.
@@ -19,25 +20,22 @@ public abstract class BaseReciver extends BroadcastReceiver
 
 	public synchronized void registerSelf()
 	{
-		int i = 0;
-		if (this instanceof ApStateBroadcastReciver)
-		{
-			i++;
-		}
 		if (!hasRegister)
+		{
 			BaseApplication.getInstance().registerReceiver(this, new IntentFilter(INTENT_FILTER));
+			LogUtil.i(this, "registerReceiver");
+		}
 		hasRegister = true;
 	}
 
 	public synchronized void unRegisterSelf()
 	{
-		int i = 0;
-		if (this instanceof ApStateBroadcastReciver)
-		{
-			i++;
-		}
 		if (hasRegister)
+		{
+			LogUtil.i(this, "unRegisterReceiver");
 			BaseApplication.getInstance().unregisterReceiver(this);
+		}
+
 		hasRegister = false;
 	}
 

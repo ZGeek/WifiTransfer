@@ -111,7 +111,7 @@ public class RecevingFragment extends BaseFragment implements SendStateChangedRe
 	{
 		if (state == SendStatus.AllFinish) //对于AllFinish做特殊处理
 		{
-			bottomButton.setText("完成");
+			bottomButton.setText("已完成");
 			return;
 		}
 

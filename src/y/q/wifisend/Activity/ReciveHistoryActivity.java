@@ -50,7 +50,7 @@ public class ReciveHistoryActivity extends BaseActivity implements AdapterView.O
 		back.setOnClickListener(this);
 
 		title.setText(R.string.history);
-		HistoryAdapter adapter = new HistoryAdapter(DataSupport.findAll(ReciveDbEntry.class));
+		HistoryAdapter adapter = new HistoryAdapter(DataSupport.order("insertDate desc").find(ReciveDbEntry.class));
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 	}
