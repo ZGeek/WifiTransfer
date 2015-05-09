@@ -1,5 +1,7 @@
 .idea/
 gen/
 out/
+proguard_logs/
 .gitignore
+*.apk
 *.iml
