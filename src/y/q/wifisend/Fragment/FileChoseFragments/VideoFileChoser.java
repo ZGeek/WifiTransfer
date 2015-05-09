@@ -151,9 +151,6 @@ public class VideoFileChoser extends BaseFragment implements GetChoseFile, Adapt
 
 			view.setTag(holder);
 
-//			holder.img.setImageDrawable(IcoUtil.getImgDrawable(holder.data.path, MediaStore.Images.Thumbnails.MINI_KIND, holder.data.id));
-
-//			ImageLoader.getInstance().displayImage("file://"+holder.path, holder.img);
 			holder.fileName.setText(TranTool.getFileNameByPath(holder.path));
 			Bitmap bitmap = MyThumbnailUtil.getVideoThumbnailByID(holder.id, MediaStore.Images.Thumbnails.MINI_KIND);
 			if(bitmap != null)
@@ -170,11 +167,8 @@ public class VideoFileChoser extends BaseFragment implements GetChoseFile, Adapt
 
 			holder.id = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
 			holder.path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-
-//			holder.img.setImageDrawable(IcoUtil.getImgDrawable(holder.data.path, MediaStore.Images.Thumbnails.MINI_KIND, holder.data.id));
 			holder.check.setVisibility(selectPath.contains(holder.path) ? View.VISIBLE : View.GONE);
-//			ImageLoader.getInstance().displayImage("file://"+holder.path, holder.img);
-//			holder.img.setImageDrawable(IcoUtil.getVideoDrawable(holder.path));
+
 
 
 			holder.fileName.setText(TranTool.getFileNameByPath(holder.path));

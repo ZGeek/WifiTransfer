@@ -158,10 +158,9 @@ public class ImageFileChoser extends BaseFragment implements AdapterView.OnItemC
 		{
 			ViewHolder holder = (ViewHolder) view.getTag();
 
-//			holder.id = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
+
 			holder.path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
 
-//			holder.img.setImageDrawable(IcoUtil.getImgDrawable(holder.data.path, MediaStore.Images.Thumbnails.MINI_KIND, holder.data.id));
 			holder.check.setVisibility(selectPath.contains(holder.path) ? View.VISIBLE : View.GONE);
 			ImageLoader.getInstance().displayImage("file://"+holder.path, holder.img);
 		}

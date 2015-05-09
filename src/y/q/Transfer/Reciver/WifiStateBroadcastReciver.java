@@ -41,13 +41,6 @@ public class WifiStateBroadcastReciver extends BaseReciver
 				onWIfiStateChangedListener.onWifiStateChanged(wifiState);
 			}
 		}
-//		Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-//		if (null != parcelableExtra)
-//		{
-//			NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
-//			if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI && onWIfiStateChangedListener != null)
-//
-//		}
 	}
 
 

@@ -84,7 +84,7 @@ public class ReceiveAction
 			contentLength -= len;
 			accessFile.write(buffer, 0, len);
 			float currentPercent = (1 - contentLength / realFileLength);
-			if (currentPercent - oldPercent > 0.03)
+			if (currentPercent - oldPercent > 0.01)
 			{
 				SendStateChangedReciver.sendStatuChangedBroadcast(uuid, SendStatus.PercentChange, currentPercent);
 				oldPercent = currentPercent;

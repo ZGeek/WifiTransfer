@@ -172,6 +172,7 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 	@Override
 	protected void onStop()
 	{
+		scanReciverResultReciver.unRegisterSelf();
 		super.onStop();
 	}
 
@@ -185,22 +186,6 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 			if (count <= 0)
 				continue;
 			ApNameInfo info = (ApNameInfo) layouts[i].getChildAt(0).getTag();
-//			int temp = -1;
-//			boolean eq = false;
-//			for(int j=0; j<scanInfo.size(); j++)
-//			{
-//				eq = scanInfo.get(j).equals(info);
-//				if(eq)
-//				{
-//					temp =j;
-//					break;
-//				}
-//			}
-//			if(eq)
-//			{
-//				scanInfo.remove(temp);
-//				continue;
-//			}
 			if (scanInfo.contains(info))
 			{
 				scanInfo.remove(info);
@@ -241,7 +226,7 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 		binder.connectionSSID(ApNameUtil.encodeApName(info));
 		infoText.setText(String.format(getString(R.string.linking), info.getName()));
 		scanResultView.setEnabled(false);
-		handler.sendEmptyMessageDelayed(MSG_ENABLE_VIEW, 5000);
+		handler.sendEmptyMessageDelayed(MSG_ENABLE_VIEW, 8000);
 	}
 
 
@@ -262,7 +247,7 @@ public class ScanReciverActivity extends BaseActivity implements View.OnClickLis
 			}
 		}
 		handler.removeMessages(MSG_SCAN_AP);
-		handler.sendEmptyMessageDelayed(MSG_SCAN_AP, 5000);//5秒新数据未到达就进行一次扫描
+		handler.sendEmptyMessageDelayed(MSG_SCAN_AP, 7000);//5秒新数据未到达就进行一次扫描
 	}
 
 	private void binderService()

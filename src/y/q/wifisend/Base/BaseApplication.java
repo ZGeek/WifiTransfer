@@ -74,7 +74,7 @@ public class BaseApplication extends LitePalApplication
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
 				.defaultDisplayImageOptions(getDefaultDisplayImageOptions())
 				.imageDownloader(new BaseImageDownloader(this, 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间
-				.writeDebugLogs() // Remove for release app
+//				.writeDebugLogs() // Remove for release app
 				.build();//开始构建
 	}
 	private static DisplayImageOptions getDefaultDisplayImageOptions()

@@ -107,7 +107,6 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 	{
 		List<ScanResult> results = wifiHelper.getScanResult();
 		ScanReciverResultReciver.sendBroadcast(usefulApFilter(results));
-//		wifiHelper.scanApList();
 	}
 
 	public ArrayList<ApNameInfo> usefulApFilter(List<ScanResult> results)
@@ -172,11 +171,6 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 
 	protected void step3WifiDisConnected()
 	{
-//		int state = wifiHelper.isWifiContected();
-//		if (state == WifiHelper.WIFI_CONNECTING || state == WifiHelper.WIFI_CONNECTED)
-//		{
-//			wifiHelper.disableCurrent();
-//		}
 		step4ScanAp();
 	}
 
@@ -197,22 +191,15 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 	{
 		if (info.isConnected() && info.getState() == NetworkInfo.State.CONNECTED && info.isAvailable())
 		{
-			if (targetSSID.equals(wifiHelper.getCurrentConnectedSSID()))
+			if (targetSSID.equals(wifiHelper.getCurrentConnectedSSID()) || ("\""+targetSSID+"\"").equals(wifiHelper.getCurrentConnectedSSID()))
 			{
 				connectivityChangeReciver.setOnWifiConnectivityChangeListener(null);
 				connectivityChangeReciver.unRegisterSelf();
 				ConnectToTargetWifiReciver.sendBroadcast(targetSSID);
 			} else
 			{
-//					wifiHelper.disableCurrent();
 				wifiHelper.addNetwork(targetSSID, "", WifiHelper.TYPE_NO_PASSWD);
 			}
-
-
-		} else
-		{
-//			bind.connectionSSID(targetSSID);
-//			wifiHelper.addNetwork(targetSSID, "", WifiHelper.TYPE_NO_PASSWD);
 		}
 	}
 
@@ -243,8 +230,10 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 
 		public void connectionSSID(final String ssid)
 		{
+			if(wifiHelper.isWifiContected() == WifiHelper.WIFI_CONNECTING && ssid != null)
+					return;
 			targetSSID = ssid;
-			if (("\"" + ssid + "\"").equals(wifiHelper.getCurrentConnectedSSID()))
+			if (targetSSID.equals(wifiHelper.getCurrentConnectedSSID()) || ("\""+targetSSID+"\"").equals(wifiHelper.getCurrentConnectedSSID()))
 			{
 				ConnectToTargetWifiReciver.sendBroadcast(targetSSID);
 				return;
@@ -252,10 +241,7 @@ public class SendService extends Service implements ScanResultAviableReciver.OnS
 			connectivityChangeReciver.setOnWifiConnectivityChangeListener(SendService.this);
 			connectivityChangeReciver.registerSelf();
 
-//			int state = wifiHelper.isWifiContected();
 			wifiHelper.addNetwork(ssid, "", WifiHelper.TYPE_NO_PASSWD);
-//			}
-
 		}
 
 		public void tranFiles(InetAddress address, int port, List<SendFileInfo> tasks)

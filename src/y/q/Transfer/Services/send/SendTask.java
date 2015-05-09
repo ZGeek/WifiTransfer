@@ -47,7 +47,7 @@ public class SendTask extends Thread
 					BufferedOutputStream out = new BufferedOutputStream(socket.getOutputStream());
 					BufferedInputStream in = new BufferedInputStream(socket.getInputStream());
 					if(!isOK(in))
-						throw new IOException("Not OK");
+						throw new IOException("Not Ready");
 					SendAction.doSend(out, task);
 					out.flush();
 					out.close();
@@ -72,6 +72,8 @@ public class SendTask extends Thread
 	{
 		byte[] buffer = new byte[512];
 		int len =  in.read(buffer);
+		if(len == -1)
+			return false;
 		String ok = new String(buffer, 0, len, Charset.forName("UTF-8"));
 		if("READY".equals(ok))
 			return true;

@@ -40,7 +40,6 @@ public class ReceiveTask extends Thread
 			stopFlag = false;
 			try
 			{
-//				BaseApplication.showToast("监听端口" + (a++));
 				serverSocket = new ServerSocket(port);
 			} catch (IOException e)
 			{
@@ -82,13 +81,13 @@ public class ReceiveTask extends Thread
 			}
 		} catch (Exception e)
 		{
-			e.printStackTrace();
 			BaseApplication.showToast(e.getMessage());
 		}finally
 		{
 			try
 			{
-				serverSocket.close();
+				if(serverSocket != null && !serverSocket.isClosed())
+					serverSocket.close();
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -98,7 +97,7 @@ public class ReceiveTask extends Thread
 
 	public void sendyReady(BufferedOutputStream out) throws IOException
 	{
-		out.write("READY".getBytes());
+		out.write("READY".getBytes("UTF-8"));
 		out.flush();
 
 	}

@@ -34,37 +34,6 @@ public class ConnectivityChangeReciver extends BaseReciver
 	{
 		if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))
 		{
-//			int networkType = intent.getIntExtra(ConnectivityManager.EXTRA_NETWORK_TYPE, -1);
-//			boolean isWiFi = networkType == ConnectivityManager.TYPE_WIFI;
-//			boolean isMobile = networkType == ConnectivityManager.TYPE_MOBILE;
-//			NetworkInfo networkInfo = manager.getNetworkInfo(networkType);
-//			LogUtil.i(this, isWiFi +" "+isMobile+" "+networkInfo );
-//			if (isWiFi && onWifiConnectivityChangeListener != null)
-//			{
-//				onWifiConnectivityChangeListener.onWifiConnectivityChange(networkInfo);
-//				return;
-//			}
-//			if (isMobile && onMobileConnectivityChangeListener != null)
-//			{
-//				onMobileConnectivityChangeListener.onMobileConnectivityChange(networkInfo);
-//				return;
-//			}
-//			Bundle bundle =  intent.getExtras();
-//			if(bundle == null)
-//				return;
-//			networkInfo =  (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-//			if(networkInfo == null)
-//				return;
-//			if(networkInfo.getType() == ConnectivityManager.TYPE_WIFI  && onWifiConnectivityChangeListener != null)
-//			{
-//				onWifiConnectivityChangeListener.onWifiConnectivityChange(networkInfo);
-//				return;
-//			}
-//			if(networkInfo.getType() == ConnectivityManager.TYPE_MOBILE  && onMobileConnectivityChangeListener != null)
-//			{
-//				onMobileConnectivityChangeListener.onMobileConnectivityChange(networkInfo);
-//				return;
-//			}
 			NetworkInfo networkInfo = manager.getActiveNetworkInfo();
 			LogUtil.i(this, "networkInfo" + networkInfo);
 			if(networkInfo == null)
